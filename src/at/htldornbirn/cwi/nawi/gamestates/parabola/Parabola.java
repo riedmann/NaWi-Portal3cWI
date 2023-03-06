@@ -26,14 +26,15 @@ public class Parabola extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.platform_x = 162f;
-        this.platform_y = 500f;
+        this.platform_y = 420f;
         this.newX = 162f;
         this.newY = 500f;
         this.gravitation = 9.81f;
-        this.startVelocity = 1f;
-        this.startAngle = 30f;
+        this.startVelocity = 300f;
+        this.startAngle = 35;
         this.height = 620-this.platform_y;
         this.test = 0;
+        System.out.println(Math.toRadians(180));
     }
 
     @Override
@@ -43,20 +44,26 @@ public class Parabola extends BasicGameState {
         //Platform
         graphics.fillRect(50, this.platform_y, 125, 670-this.platform_y);
         //Ball
-        graphics.fillOval(162,this.platform_y-25,25,25);
+        graphics.fillOval(this.newX,this.newY,25,25);
 
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        this.test++;
+
         formula(this.test);
         if(this.newY >= 0) {
-            System.out.println(this.newY);
+            System.out.println("y(x) = " + this.newY + " x = " + this.test);
         }
+        this.test += 0.1;
+        this.newY = 620 - this.newY;
+        this.newX = 162 + this.test;
     }
 
     public void formula(float posX) {
-        this.newY = (float) ((-1/2 * this.gravitation / Math.sqrt(this.startVelocity*Math.cos(this.startAngle)) * posX) + Math.tan(this.startAngle)*posX + this.height);
+        //Funktioniert doch nicht
+        System.out.println("With x = " + posX + " " + (-1/2 * this.gravitation / Math.pow(this.startVelocity*Math.cos(Math.toRadians(this.startAngle)), 2) * Math.pow(posX,2)));
+
+        this.newY = (float) ((-1/2 * this.gravitation / Math.sqrt(this.startVelocity*Math.cos(Math.toRadians(this.startAngle))) * posX) + Math.tan(Math.toRadians(this.startAngle))*posX + this.height);
     }
 }
