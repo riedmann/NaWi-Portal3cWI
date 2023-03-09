@@ -8,10 +8,15 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Parabola extends BasicGameState {
 
-    private float platform_x, platform_y, newX, newY, gravitation, startVelocity, startAngle, height;
+    private float platform_x, platform_y, newX, newY, gravitation, startVelocity, startAngle, height, time;
     private float test;
+
+
 
 
 
@@ -26,15 +31,15 @@ public class Parabola extends BasicGameState {
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         this.platform_x = 162f;
-        this.platform_y = 420f;
-        this.newX = 162f;
-        this.newY = 500f;
+        this.platform_y = 620f;
+        this.newX = 165f;
+        this.newY = this.platform_y - 25;
         this.gravitation = 9.81f;
-        this.startVelocity = 300f;
-        this.startAngle = 35;
-        this.height = 620-this.platform_y;
-        this.test = 0;
-        System.out.println(Math.toRadians(180));
+        this.startVelocity = 20f;
+        this.startAngle = 0f;
+        this.height = 100f;
+        this.time = 0f;
+
     }
 
     @Override
@@ -51,19 +56,23 @@ public class Parabola extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
 
-        formula(this.test);
-        if(this.newY >= 0) {
-            System.out.println("y(x) = " + this.newY + " x = " + this.test);
+
+        if(this.newY <= 615) {
+            formula(this.time);
+            this.newY = -this.newY;
         }
-        this.test += 0.1;
-        this.newY = 620 - this.newY;
-        this.newX = 162 + this.test;
+        else
+            //System.out.println("finished " + this.time);
+
+        System.out.println(this.time);
+        //System.out.println(this.newY);
+        this.time += (float)i/1000;
+
     }
 
     public void formula(float posX) {
-        //Funktioniert doch nicht
-        System.out.println("With x = " + posX + " " + (-1/2 * this.gravitation / Math.pow(this.startVelocity*Math.cos(Math.toRadians(this.startAngle)), 2) * Math.pow(posX,2)));
+        this.newY = (float) ((-1)*(640-this.height) + (-0.5)*this.gravitation*posX*posX + this.startVelocity*Math.sin(Math.toRadians(this.startAngle)*posX + this.height));
+        this.newX = (float) (this.startVelocity*Math.cos(Math.toRadians(this.startAngle))*this.time);
 
-        this.newY = (float) ((-1/2 * this.gravitation / Math.sqrt(this.startVelocity*Math.cos(Math.toRadians(this.startAngle))) * posX) + Math.tan(Math.toRadians(this.startAngle))*posX + this.height);
     }
 }

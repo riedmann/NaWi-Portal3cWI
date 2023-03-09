@@ -16,7 +16,7 @@ public class NaWIPortalMainGame extends StateBasedGame {
 
         public static void main(String[] args) throws SlickException {
             AppGameContainer container = new AppGameContainer(new NaWIPortalMainGame("NaWI Portal 3cwi"));
-            container.setDisplayMode(1280,720,false);
+            container.setDisplayMode(1920,1080,false);
             container.setTargetFrameRate(59);
             container.start();
 
